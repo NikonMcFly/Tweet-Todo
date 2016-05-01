@@ -1,0 +1,60 @@
+<!Doctype html>
+
+<html lang="en" ng-app="myapp">
+	<head>
+			<meta charset="utf-8">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	    <meta name="viewport" content="width=device-width, initial-scale=1">
+	    <!-- <link rel="stylesheet" href="style/css/main.css"> -->
+	</head>
+	<script src="http://code.angularjs.org/1.2.10/angular.min.js"></script>
+	<body>
+		<div ng-controller="MainCtrl">
+	<div>Steven Osborne</div>
+	<li ng-repeat="to in data">{{to.name}}</li>
+	</div>
+	<div ng-controller="TweetCtrl">
+		<div>I am some tweets</div>
+	<li ng-model="tweet">{{tweet.text}}</li>
+	</div>
+	<script src="http://code.angularjs.org/1.2.10/angular-resource.min.js"></script>
+	<script>
+	var myapp = new angular.module("myapp", ["ngResource"]);
+
+	myapp.controller("MainCtrl", ["$scope", "$resource", "$http", function($scope, $resource, $http){
+		// var todos = $resource("/todo");
+		// // console.log(todos)
+		// $scope.todos = todos.get();
+		// console.log(todos)
+
+		$http.get('/todo')
+			.then(function(result, error){
+		if(error){
+			console.log("error endpoint");
+		}
+		$scope.data = result.data;
+	});
+
+	}]);
+	</script>
+		<script>
+	// var myapp = new angular.module("myapp", ["ngResource"]);
+
+	myapp.controller("TweetCtrl", ["$scope", "$resource", "$http", function($scope, $resource, $http){
+
+
+		$http.get('/tweet')
+			.then(function(result, error){
+		if(error){
+			console.log("error endpoint");
+		}
+		var tweets = result.data;
+		$scope.tweet = tweets;
+
+		console.log($scope.tweet)
+	});
+
+	}]);
+	</script>
+	</body>
+</html>
